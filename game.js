@@ -90,6 +90,13 @@ function update() {
     ballX += ballSpeedX;
     ballY += ballSpeedY;
 
+    // Ensure ball doesn't drop too vertically
+    if (ballSpeedX < 0) {
+        ballSpeedX = Math.min(ballSpeedX, -BALL_SPEED);
+    } else {
+        ballSpeedX = Math.max(ballSpeedX, BALL_SPEED);
+    }
+
     // Check for wall collisions
     if (ballX <= BALL_SIZE || ballX >= WIDTH - BALL_SIZE) {
         ballSpeedX = -ballSpeedX;
