@@ -208,7 +208,6 @@ function runGameOver() {
     if (!ran_once) {
         gameOverDiv.style.display = 'flex';
         fps = 120;
-        backgroundMusic.pause();
     }
 
     let winning = false;
@@ -238,6 +237,7 @@ function runGameOver() {
     // Draw winning image if applicable
     if (winning) {
         ctx.drawImage(winningImage, 0, 0, WIDTH, HEIGHT);
+        backgroundMusic.pause();
     }
 
     // Draw message
@@ -302,7 +302,7 @@ function restartGame() {
     gameState = 'PLAYING';
     ran_once = false; // Reset the ran_once flag
     shades_y = -300;  // Reset shades_y
-    playSound(backgroundMusic);
+    backgroundMusic.play();
 }
 
 // Start game loop
