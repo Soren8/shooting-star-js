@@ -196,7 +196,7 @@ function drawMenu() {
         "Move your wand at the bottom of the screen to stop the star from falling.",
         "Score 50 to win!"
     ];
-    drawText(text, WIDTH / 2, HEIGHT * 0.4);
+    drawText(text, WIDTH / 2, HEIGHT * 0.33);
 }
 
 // Draw game state for GAME_OVER
@@ -242,7 +242,7 @@ function runGameOver() {
 
     // Draw message
     if (message) {
-        drawText(message, WIDTH / 2, HEIGHT / 2);
+        drawText(message, WIDTH / 2, HEIGHT / 3);
     }
 
     // Handle winning scenario
