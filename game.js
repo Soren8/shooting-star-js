@@ -35,7 +35,7 @@ let ballY = Math.random() * (HEIGHT / 3);
 let ballSpeedX = (Math.random() - 0.5) * 2 * BALL_SPEED;
 let ballSpeedY = BALL_SPEED;
 let score = 0;
-let gameState = 'GAME_OVER';
+let gameState = 'MENU';
 let sparkles = [];
 let fps = 120;
 let ran_once = false;
@@ -44,12 +44,12 @@ let shades_y = -300;
 // Elements
 const menu = document.getElementById('menu');
 const gameOverDiv = document.getElementById('gameOver');
-const restartButton = document.getElementById('restartButton');
+const playButton = document.getElementById('playButton');
 const playAgainButton = document.getElementById('playAgainButton');
 const backgroundMusic = document.getElementById('backgroundMusic');
 
 // Event Listeners
-restartButton.addEventListener('click', () => {
+playButton.addEventListener('click', () => {
     menu.style.display = 'none';
     restartGame();
 });
@@ -133,10 +133,24 @@ function drawText(text, x, y) {
     ctx.lineWidth = 4;
     ctx.fillStyle = '#FFF';
     ctx.strokeStyle = '#000';
-    // Draw outline
-    ctx.strokeText(text, x - ctx.measureText(text).width / 2, y);
-    // Draw white text
-    ctx.fillText(text, x - ctx.measureText(text).width / 2, y);
+
+    const lineHeight = 30; // Adjust as needed for spacing between lines
+
+    // If text is a single string, convert it to an array with one element
+    if (typeof text === 'string') {
+        text = [text];
+    }
+
+    text.forEach((line, index) => {
+        const textWidth = ctx.measureText(line).width;
+        const centeredX = x - textWidth / 2;
+        const lineY = y + (index * lineHeight);
+
+        // Draw outline
+        ctx.strokeText(line, centeredX, lineY);
+        // Draw white text
+        ctx.fillText(line, centeredX, lineY);
+    });
 }
 
 // Draw game state for PLAYING
@@ -165,6 +179,13 @@ function drawPlaying() {
 function drawMenu() {
     ctx.clearRect(0, 0, WIDTH, HEIGHT); // Clear canvas
     menu.style.display = 'flex';
+
+    text = [
+        "Welcome to Shooting Star.",
+        "Move your wand at the bottom of the screen to stop the star from falling.",
+        "Score 50 to win!"
+    ];
+    drawText(text, WIDTH / 2, HEIGHT * 0.4);
 }
 
 // Draw game state for GAME_OVER
@@ -176,7 +197,8 @@ function runGameOver() {
     if (!ran_once) {
         gameOverDiv.style.display = 'flex';
         fps = 120;
-        backgroundMusic.stop();
+        backgroundMusic.pause();
+        backgroundMusic.currentTime = 0;
     }
 
     let winning = false;
@@ -262,8 +284,12 @@ window.addEventListener('keyup', (e) => {
     if (e.code === 'ArrowRight') keys.right = false;
 });
 window.addEventListener('keydown', (e) => {
-    if (e.code === 'Enter' && gameState === 'GAME_OVER') {
-        playAgainButton.click();
+    if (e.code === 'Enter') {
+        if (gameState === 'GAME_OVER') {
+            playAgainButton.click();
+        } else if (gameState == 'MENU') {
+            playButton.click();
+        }
     }
 });
 
