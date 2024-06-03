@@ -151,7 +151,7 @@ function update() {
         paddleImage.width = paddle_width;
         paddleImage.height = paddle_height;
         
-        fps *= 1.012;
+        fps *= 1.05;
     }
 }
 
