@@ -37,14 +37,38 @@ let ballSpeedX = (Math.random() - 0.5) * 2 * BALL_SPEED;
 let ballSpeedY = BALL_SPEED;
 let score = 0;
 let running = true;
-let gameState = 'PLAYING'; // Other state could be 'GAME_OVER'
+let gameState = 'PLAYING'; // Default state set to PLAYING
 let sparkles = [];
+
+// Elements
+const menu = document.getElementById('menu');
+const gameOverDiv = document.getElementById('gameOver');
+const restartButton = document.getElementById('restartButton');
+const playAgainButton = document.getElementById('playAgainButton');
+const finalScore = document.getElementById('finalScore');
+
+// Event Listeners
+restartButton.addEventListener('click', () => {
+    menu.style.display = 'none';
+    restartGame();
+});
+
+playAgainButton.addEventListener('click', () => {
+    gameOverDiv.style.display = 'none';
+    restartGame();
+});
 
 // Main game loop
 function gameLoop() {
     if (running) {
-        update();
-        draw();
+        if (gameState === 'PLAYING') {
+            update();
+            drawPlaying();
+        } else if (gameState === 'MENU') {
+            drawMenu();
+        } else if (gameState === 'GAME_OVER') {
+            drawGameOver();
+        }
         setTimeout(gameLoop, 1000 / FPS);
     }
 }
@@ -62,6 +86,8 @@ function update() {
     }
     if (ballY > HEIGHT - 30) {
         gameState = 'GAME_OVER';
+        finalScore.textContent = score;
+        gameOverDiv.style.display = 'flex';
     }
 
     // Player movement
@@ -74,8 +100,8 @@ function update() {
 
     // Add sparkles
     sparkles.push({
-        x: ballX + BALL_SIZE / 2,
-        y: ballY + BALL_SIZE / 2,
+        x: ballX + BALL_SIZE / 2 + (Math.random() - 0.5) * 10,
+        y: ballY + BALL_SIZE / 2 + (Math.random() - 0.5) * 10,
         alpha: 1
     });
 
@@ -104,10 +130,9 @@ function update() {
     }
 }
 
-// Draw game state
-function draw() {
-    // Clear canvas
-    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+// Draw game state for PLAYING
+function drawPlaying() {
+    ctx.clearRect(0, 0, WIDTH, HEIGHT); // Clear canvas
 
     // Draw ball
     ctx.drawImage(ballImage, ballX, ballY, BALL_SIZE, BALL_SIZE);
@@ -127,11 +152,18 @@ function draw() {
     ctx.font = '24px Arial';
     ctx.fillStyle = '#FFF';
     ctx.fillText('Score: ' + score, 10, HEIGHT - 30);
+}
 
-    // Draw game over screen
-    if (gameState === 'GAME_OVER') {
-        ctx.drawImage(winningImage, 0, 0, WIDTH, HEIGHT);
-    }
+// Draw game state for MENU
+function drawMenu() {
+    ctx.clearRect(0, 0, WIDTH, HEIGHT); // Clear canvas
+    menu.style.display = 'flex';
+}
+
+// Draw game state for GAME_OVER
+function drawGameOver() {
+    ctx.clearRect(0, 0, WIDTH, HEIGHT); // Clear canvas
+    ctx.drawImage(winningImage, 0, 0, WIDTH, HEIGHT);
 }
 
 // Check for collision
@@ -154,6 +186,19 @@ window.addEventListener('keyup', (e) => {
     if (e.code === 'ArrowLeft') keys.left = false;
     if (e.code === 'ArrowRight') keys.right = false;
 });
+
+// Restart game
+function restartGame() {
+    playerX = WIDTH / 2 - PADDLE_WIDTH / 2;
+    playerY = HEIGHT - 50;
+    ballX = Math.random() * WIDTH;
+    ballY = Math.random() * (HEIGHT / 3);
+    ballSpeedX = (Math.random() - 0.5) * 2 * BALL_SPEED;
+    ballSpeedY = BALL_SPEED;
+    score = 0;
+    sparkles = [];
+    gameState = 'PLAYING';
+}
 
 // Start game loop
 gameLoop();
