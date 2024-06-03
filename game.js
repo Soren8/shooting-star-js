@@ -26,20 +26,23 @@ const sparkleImage = new Image();
 sparkleImage.src = 'sparkle.png';
 
 // Game state
-let paddle_width = 0;   // Set in restartGame()
-let paddle_height = 0;  // Set in restartGame()
-let playerX = WIDTH / 2 - paddle_width / 2;
-let playerY = HEIGHT - 50;
-let ballX = Math.random() * WIDTH;
-let ballY = Math.random() * (HEIGHT / 3);
-let ballSpeedX = (Math.random() - 0.5) * 2 * BALL_SPEED;
-let ballSpeedY = BALL_SPEED;
+// All of these are initialized in restartGame()
+let paddle_width = 0;
+let paddle_height = 0;
+let playerX = 0;
+let playerY = 0;
+let ballX = 0;
+let ballY = 0;
+let ballSpeedX = 0;
+let ballSpeedY = 0;
 let score = 0;
-let gameState = 'MENU';
 let sparkles = [];
-let fps = 120;
+let fps = 0;
 let ran_once = false;
-let shades_y = -300;
+let shades_y = 0;
+
+// Other variables
+let gameState = 'MENU';
 let linkOpened = false;
 
 // Elements
@@ -158,7 +161,7 @@ function update() {
         paddleImage.width = paddle_width;
         paddleImage.height = paddle_height;
         
-        fps *= 1.05;
+        fps *= 1.012;
     }
 }
 
@@ -319,7 +322,7 @@ function restartGame() {
     playerX = WIDTH / 2 - paddle_width / 2;
     playerY = HEIGHT - 50;
     ballX = Math.random() * WIDTH;
-    ballY = Math.random() * (HEIGHT / 3);
+    ballY = Math.random() * (HEIGHT / 5) + HEIGHT / 20;
     ballSpeedX = (Math.random() - 0.5) * 2 * BALL_SPEED;
     ballSpeedY = BALL_SPEED;
     score = 0;
@@ -329,6 +332,7 @@ function restartGame() {
     shades_y = -300;  // Reset shades_y
     paddle_width = 300;
     paddle_height = 25;
+    fps = 120;
     backgroundMusic.play();
 }
 
