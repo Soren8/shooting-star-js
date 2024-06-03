@@ -134,6 +134,7 @@ function update() {
 
     if (checkCollision(paddleRect, ballRect)) {
         ballSpeedY = -BALL_SPEED;
+        ballY = playerY - BALL_SIZE;  // Move ball above paddle to prevent multiple collisions
         score++;
     }
 }
