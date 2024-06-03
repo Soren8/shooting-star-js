@@ -93,11 +93,13 @@ function update() {
     ballX += ballSpeedX;
     ballY += ballSpeedY;
 
-    // Ensure ball doesn't drop too vertically
+    // Ensure ballSpeedX stays within reasonable bounds
     if (ballSpeedX < 0) {
-        ballSpeedX = Math.min(ballSpeedX, -BALL_SPEED);
+        ballSpeedX = Math.min(ballSpeedX, -BALL_SPEED / 2);
+        ballSpeedX = Math.max(ballSpeedX, -BALL_SPEED * 1.5);
     } else {
-        ballSpeedX = Math.max(ballSpeedX, BALL_SPEED);
+        ballSpeedX = Math.max(ballSpeedX, BALL_SPEED / 2);
+        ballSpeedX = Math.min(ballSpeedX, BALL_SPEED * 1.5);
     }
 
     // Check for wall collisions
@@ -149,9 +151,6 @@ function update() {
 
         // Add random variation to the horizontal speed to vary the bounce angle
         ballSpeedX *= (Math.random() * 0.4 + 0.8);
-
-        // Slightly reduce y speed
-        ballSpeedY *= 0.995;
 
         // Make the game get harder over time
         paddle_width *= 0.98;
