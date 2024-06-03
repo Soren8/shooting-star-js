@@ -5,7 +5,6 @@ const BALL_SIZE = 32;
 const PADDLE_WIDTH = 300;
 const PADDLE_HEIGHT = 25;
 const BALL_SPEED = 5;
-const FPS = 120;
 const GRAVITY_ACC = 1 / (HEIGHT / 100);
 
 // Canvas setup
@@ -39,6 +38,10 @@ let score = 0;
 let running = true;
 let gameState = 'PLAYING'; // Default state set to PLAYING
 let sparkles = [];
+let fps = 120;
+let ran_once = false;
+let exit_delay = -1;
+let shades_y = -300;
 
 // Elements
 const menu = document.getElementById('menu');
@@ -66,9 +69,9 @@ function gameLoop() {
         } else if (gameState === 'MENU') {
             drawMenu();
         } else if (gameState === 'GAME_OVER') {
-            drawGameOver();
+            runGameOver();
         }
-        setTimeout(gameLoop, 1000 / FPS);
+        setTimeout(gameLoop, 1000 / fps);
     }
 }
 
@@ -169,10 +172,88 @@ function drawMenu() {
 }
 
 // Draw game state for GAME_OVER
-function drawGameOver() {
-    ctx.clearRect(0, 0, WIDTH, HEIGHT); // Clear canvas
-    ctx.drawImage(winningImage, 0, 0, WIDTH, HEIGHT);
-    drawText("Game Over! Your Score: " + score, WIDTH / 2, HEIGHT / 4)
+function runGameOver() {
+    let shades_x = 300;
+    let shades_y_max = 190;
+
+    if (!ran_once) {
+        fps = 120;
+        // Stop the music (assuming you have a music object to stop)
+        // music.stop();  // Implement this according to your setup
+    }
+
+    let winning = false;
+    let message = "";
+
+    if (score < 5) {
+        message = "Wow, you really suck ass!";
+        if (!ran_once) {
+            // Play the zero_score_sound
+            // zero_score_sound.play();  // Implement this according to your setup
+        }
+    } else if (score < 20) {
+        message = "You suck!";
+        if (!ran_once) {
+            // Play the low_score_sound
+            // low_score_sound.play();  // Implement this according to your setup
+        }
+    } else if (score < 30) {
+        message = "Not bad.";
+        if (!ran_once) {
+            // Play the mid_score_sound
+            // mid_score_sound.play();  // Implement this according to your setup
+        }
+    } else if (score < 50) {
+        message = "Pretty good!";
+        if (!ran_once) {
+            // Play the good_score_sound
+            // good_score_sound.play();  // Implement this according to your setup
+        }
+    } else {
+        if (!ran_once) {
+            // Play the winning_score_sound
+            // winning_score_sound.play();  // Implement this according to your setup
+        }
+        message = "";
+        winning = true;
+    }
+
+    // Clear canvas
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+
+    // Draw winning image if applicable
+    if (winning) {
+        ctx.drawImage(winningImage, 0, 0, WIDTH, HEIGHT);
+    }
+
+    // Draw message
+    if (message) {
+        drawText(message, WIDTH / 2, HEIGHT / 2);
+        if (!ran_once) {
+            exit_delay = fps * 3;
+        }
+    }
+
+    // Handle winning scenario
+    if (winning) {
+        if (!ran_once) {
+            window.open("https://www.youtube.com/watch?v=9QS0q3mGPGg");
+            exit_delay = fps * 120;
+        }
+        ctx.drawImage(shadesImage, shades_x, shades_y);
+        shades_y += 1;
+        shades_y = Math.min(shades_y, shades_y_max);
+    }
+
+    if (exit_delay > -1) {
+        if (exit_delay == 0) {
+            running = false;
+        } else {
+            exit_delay -= 1;
+        }
+    }
+
+    ran_once = true;
 }
 
 // Check for collision
