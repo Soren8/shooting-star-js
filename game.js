@@ -35,7 +35,7 @@ let ballY = Math.random() * (HEIGHT / 3);
 let ballSpeedX = (Math.random() - 0.5) * 2 * BALL_SPEED;
 let ballSpeedY = BALL_SPEED;
 let score = 0;
-let gameState = 'PLAYING'; // Default state set to PLAYING
+let gameState = 'GAME_OVER';
 let sparkles = [];
 let fps = 120;
 let ran_once = false;
@@ -46,6 +46,7 @@ const menu = document.getElementById('menu');
 const gameOverDiv = document.getElementById('gameOver');
 const restartButton = document.getElementById('restartButton');
 const playAgainButton = document.getElementById('playAgainButton');
+const backgroundMusic = document.getElementById('backgroundMusic');
 
 // Event Listeners
 restartButton.addEventListener('click', () => {
@@ -84,7 +85,6 @@ function update() {
     }
     if (ballY > HEIGHT - 30) {
         gameState = 'GAME_OVER';
-        gameOverDiv.style.display = 'flex';
     }
 
     // Player movement
@@ -172,10 +172,11 @@ function runGameOver() {
     let shades_x = 300;
     let shades_y_max = 190;
 
+
     if (!ran_once) {
+        gameOverDiv.style.display = 'flex';
         fps = 120;
-        // Stop the music (assuming you have a music object to stop)
-        // music.stop();  // Implement this according to your setup
+        backgroundMusic.stop();
     }
 
     let winning = false;
@@ -279,6 +280,7 @@ function restartGame() {
     gameState = 'PLAYING';
     ran_once = false; // Reset the ran_once flag
     shades_y = -300;  // Reset shades_y
+    backgroundMusic.play();
 }
 
 // Start game loop
