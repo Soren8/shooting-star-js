@@ -47,6 +47,16 @@ const gameOverDiv = document.getElementById('gameOver');
 const playButton = document.getElementById('playButton');
 const playAgainButton = document.getElementById('playAgainButton');
 const backgroundMusic = document.getElementById('backgroundMusic');
+const zeroScoreSound = document.getElementById('zeroScoreSound');
+const lowScoreSound = document.getElementById('lowScoreSound');
+const midScoreSound = document.getElementById('midScoreSound');
+const goodScoreSound = document.getElementById('goodScoreSound');
+const winningScoreSound = document.getElementById('winningScoreSound');
+
+function playSound(sound) {
+    sound.currentTime = 0; // Reset to start
+    sound.play();
+}
 
 // Event Listeners
 playButton.addEventListener('click', () => {
@@ -198,7 +208,6 @@ function runGameOver() {
         gameOverDiv.style.display = 'flex';
         fps = 120;
         backgroundMusic.pause();
-        backgroundMusic.currentTime = 0;
     }
 
     let winning = false;
@@ -207,31 +216,26 @@ function runGameOver() {
     if (score < 5) {
         message = "Wow, you really suck ass!";
         if (!ran_once) {
-            // Play the zero_score_sound
-            // zero_score_sound.play();  // Implement this according to your setup
+            playSound(zeroScoreSound);
         }
     } else if (score < 20) {
         message = "You suck!";
         if (!ran_once) {
-            // Play the low_score_sound
-            // low_score_sound.play();  // Implement this according to your setup
+            playSound(lowScoreSound);
         }
     } else if (score < 30) {
         message = "Not bad.";
         if (!ran_once) {
-            // Play the mid_score_sound
-            // mid_score_sound.play();  // Implement this according to your setup
+            playSound(midScoreSound);
         }
     } else if (score < 50) {
         message = "Pretty good!";
         if (!ran_once) {
-            // Play the good_score_sound
-            // good_score_sound.play();  // Implement this according to your setup
+            playSound(goodScoreSound);
         }
     } else {
         if (!ran_once) {
-            // Play the winning_score_sound
-            // winning_score_sound.play();  // Implement this according to your setup
+            playSound(winningScoreSound);
         }
         message = "";
         winning = true;
@@ -306,7 +310,7 @@ function restartGame() {
     gameState = 'PLAYING';
     ran_once = false; // Reset the ran_once flag
     shades_y = -300;  // Reset shades_y
-    backgroundMusic.play();
+    playSound(backgroundMusic);
 }
 
 // Start game loop
