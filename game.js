@@ -40,6 +40,7 @@ let sparkles = [];
 let fps = 120;
 let ran_once = false;
 let shades_y = -300;
+let linkOpened = false;
 
 // Elements
 const menu = document.getElementById('menu');
@@ -246,10 +247,11 @@ function runGameOver() {
 
     // Handle winning scenario
     if (winning) {
-        if (!ran_once) {
+        if (!linkOpened && shades_y >= shades_y_max) {
             window.open("https://www.youtube.com/watch?v=9QS0q3mGPGg");
+            linkOpened = true; // Set the flag to true after opening the link
         }
-        ctx.drawImage(shadesImage, shades_x, shades_y);
+        ctx.drawImage(shadesImage, shades_x, shades_y, WIDTH / 4, 200);
         shades_y += 1;
         shades_y = Math.min(shades_y, shades_y_max);
     }
