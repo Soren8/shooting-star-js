@@ -108,8 +108,8 @@ function update() {
 
     // Add sparkles
     sparkles.push({
-        x: ballX + BALL_SIZE / 2 + (Math.random() - 0.5) * 10,
-        y: ballY + BALL_SIZE / 2 + (Math.random() - 0.5) * 10,
+        x: ballX - BALL_SIZE / 4 + BALL_SIZE / 2 + (Math.random() - 0.5) * 15,
+        y: ballY - BALL_SIZE / 4 + BALL_SIZE / 2 + (Math.random() - 0.5) * 15,
         alpha: 1
     });
 
