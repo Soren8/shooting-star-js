@@ -45,7 +45,6 @@ const menu = document.getElementById('menu');
 const gameOverDiv = document.getElementById('gameOver');
 const restartButton = document.getElementById('restartButton');
 const playAgainButton = document.getElementById('playAgainButton');
-const finalScore = document.getElementById('finalScore');
 
 // Event Listeners
 restartButton.addEventListener('click', () => {
@@ -86,7 +85,6 @@ function update() {
     }
     if (ballY > HEIGHT - 30) {
         gameState = 'GAME_OVER';
-        finalScore.textContent = score;
         gameOverDiv.style.display = 'flex';
     }
 
@@ -130,6 +128,18 @@ function update() {
     }
 }
 
+// Draw text with outline
+function drawText(text, x, y) {
+    ctx.font = '24px Arial';
+    ctx.lineWidth = 4;
+    ctx.fillStyle = '#FFF';
+    ctx.strokeStyle = '#000';
+    // Draw outline
+    ctx.strokeText(text, x - ctx.measureText(text).width / 2, y);
+    // Draw white text
+    ctx.fillText(text, x - ctx.measureText(text).width / 2, y);
+}
+
 // Draw game state for PLAYING
 function drawPlaying() {
     ctx.clearRect(0, 0, WIDTH, HEIGHT); // Clear canvas
@@ -149,9 +159,7 @@ function drawPlaying() {
     ctx.globalAlpha = 1;
 
     // Draw score
-    ctx.font = '24px Arial';
-    ctx.fillStyle = '#FFF';
-    ctx.fillText('Score: ' + score, 10, HEIGHT - 30);
+    drawText('Score: ' + score, 10, HEIGHT - 30);
 }
 
 // Draw game state for MENU
@@ -164,6 +172,7 @@ function drawMenu() {
 function drawGameOver() {
     ctx.clearRect(0, 0, WIDTH, HEIGHT); // Clear canvas
     ctx.drawImage(winningImage, 0, 0, WIDTH, HEIGHT);
+    drawText("Game Over! Your Score: " + score, WIDTH / 2, HEIGHT / 4)
 }
 
 // Check for collision
