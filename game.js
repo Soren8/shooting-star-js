@@ -35,12 +35,10 @@ let ballY = Math.random() * (HEIGHT / 3);
 let ballSpeedX = (Math.random() - 0.5) * 2 * BALL_SPEED;
 let ballSpeedY = BALL_SPEED;
 let score = 0;
-let running = true;
 let gameState = 'PLAYING'; // Default state set to PLAYING
 let sparkles = [];
 let fps = 120;
 let ran_once = false;
-let exit_delay = -1;
 let shades_y = -300;
 
 // Elements
@@ -62,17 +60,15 @@ playAgainButton.addEventListener('click', () => {
 
 // Main game loop
 function gameLoop() {
-    if (running) {
-        if (gameState === 'PLAYING') {
-            update();
-            drawPlaying();
-        } else if (gameState === 'MENU') {
-            drawMenu();
-        } else if (gameState === 'GAME_OVER') {
-            runGameOver();
-        }
-        setTimeout(gameLoop, 1000 / fps);
+    if (gameState === 'PLAYING') {
+        update();
+        drawPlaying();
+    } else if (gameState === 'MENU') {
+        drawMenu();
+    } else if (gameState === 'GAME_OVER') {
+        runGameOver();
     }
+    setTimeout(gameLoop, 1000 / fps);
 }
 
 // Update game state
@@ -162,7 +158,7 @@ function drawPlaying() {
     ctx.globalAlpha = 1;
 
     // Draw score
-    drawText('Score: ' + score, 10, HEIGHT - 30);
+    drawText('Score: ' + score, 75, HEIGHT - 5);
 }
 
 // Draw game state for MENU
@@ -229,28 +225,16 @@ function runGameOver() {
     // Draw message
     if (message) {
         drawText(message, WIDTH / 2, HEIGHT / 2);
-        if (!ran_once) {
-            exit_delay = fps * 3;
-        }
     }
 
     // Handle winning scenario
     if (winning) {
         if (!ran_once) {
             window.open("https://www.youtube.com/watch?v=9QS0q3mGPGg");
-            exit_delay = fps * 120;
         }
         ctx.drawImage(shadesImage, shades_x, shades_y);
         shades_y += 1;
         shades_y = Math.min(shades_y, shades_y_max);
-    }
-
-    if (exit_delay > -1) {
-        if (exit_delay == 0) {
-            running = false;
-        } else {
-            exit_delay -= 1;
-        }
     }
 
     ran_once = true;
@@ -276,6 +260,11 @@ window.addEventListener('keyup', (e) => {
     if (e.code === 'ArrowLeft') keys.left = false;
     if (e.code === 'ArrowRight') keys.right = false;
 });
+window.addEventListener('keydown', (e) => {
+    if (e.code === 'Enter' && gameState === 'GAME_OVER') {
+        playAgainButton.click();
+    }
+});
 
 // Restart game
 function restartGame() {
@@ -288,6 +277,8 @@ function restartGame() {
     score = 0;
     sparkles = [];
     gameState = 'PLAYING';
+    ran_once = false; // Reset the ran_once flag
+    shades_y = -300;  // Reset shades_y
 }
 
 // Start game loop
