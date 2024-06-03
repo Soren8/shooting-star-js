@@ -2,8 +2,6 @@
 const WIDTH = 1280;
 const HEIGHT = 1024;
 const BALL_SIZE = 32;
-const PADDLE_WIDTH = 300;
-const PADDLE_HEIGHT = 25;
 const BALL_SPEED = 5;
 const GRAVITY_ACC = 1 / (HEIGHT / 100);
 
@@ -28,7 +26,9 @@ const sparkleImage = new Image();
 sparkleImage.src = 'sparkle.png';
 
 // Game state
-let playerX = WIDTH / 2 - PADDLE_WIDTH / 2;
+let paddle_width = 0;   // Set in restartGame()
+let paddle_height = 0;  // Set in restartGame()
+let playerX = WIDTH / 2 - paddle_width / 2;
 let playerY = HEIGHT - 50;
 let ballX = Math.random() * WIDTH;
 let ballY = Math.random() * (HEIGHT / 3);
@@ -102,7 +102,7 @@ function update() {
     if (keys.left && playerX > 0) {
         playerX -= 10;
     }
-    if (keys.right && playerX < WIDTH - PADDLE_WIDTH) {
+    if (keys.right && playerX < WIDTH - paddle_width) {
         playerX += 10;
     }
 
@@ -122,8 +122,8 @@ function update() {
     const paddleRect = {
         x: playerX,
         y: playerY,
-        width: PADDLE_WIDTH,
-        height: PADDLE_HEIGHT
+        width: paddle_width,
+        height: paddle_height
     };
     const ballRect = {
         x: ballX,
@@ -133,9 +133,25 @@ function update() {
     };
 
     if (checkCollision(paddleRect, ballRect)) {
-        ballSpeedY = -BALL_SPEED;
-        ballY = playerY - BALL_SIZE;  // Move ball above paddle to prevent multiple collisions
+        ballSpeedY = -ballSpeedY;       // Make the ball bounce vertically
+        ballY = playerY - BALL_SIZE;    // Move ball above paddle to prevent multiple collisions
         score++;
+
+        // Add random variation to the horizontal speed to vary the bounce angle
+        ballSpeedX *= (Math.random() * 0.4 + 0.8);
+
+        // Slightly reduce y speed
+        ballSpeedY *= 0.995;
+
+        // Make the game get harder over time
+        paddle_width *= 0.98;
+        paddle_width = Math.max(paddle_width, 60);
+        paddle_height *= 0.98;
+        paddle_height = Math.max(paddle_height, 15);
+        paddleImage.width = paddle_width;
+        paddleImage.height = paddle_height;
+        
+        fps *= 1.012;
     }
 }
 
@@ -173,7 +189,7 @@ function drawPlaying() {
     ctx.drawImage(ballImage, ballX, ballY, BALL_SIZE, BALL_SIZE);
 
     // Draw paddle
-    ctx.drawImage(paddleImage, playerX, playerY, PADDLE_WIDTH, PADDLE_HEIGHT);
+    ctx.drawImage(paddleImage, playerX, playerY, paddle_width, paddle_height);
 
     // Draw sparkles
     sparkles.forEach((sparkle, index) => {
@@ -293,7 +309,7 @@ window.addEventListener('keydown', (e) => {
 
 // Restart game
 function restartGame() {
-    playerX = WIDTH / 2 - PADDLE_WIDTH / 2;
+    playerX = WIDTH / 2 - paddle_width / 2;
     playerY = HEIGHT - 50;
     ballX = Math.random() * WIDTH;
     ballY = Math.random() * (HEIGHT / 3);
@@ -304,6 +320,8 @@ function restartGame() {
     gameState = 'PLAYING';
     ran_once = false; // Reset the ran_once flag
     shades_y = -300;  // Reset shades_y
+    paddle_width = 300;
+    paddle_height = 25;
     backgroundMusic.play();
 }
 
