@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shooting Star</title>
+    <style>
+        body {
+            background-color: black;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+            margin: auto;
+            background: url('background.webp') no-repeat center center;
+            background-size: cover;
+        }
+        #menu, #gameOver {
+            position: absolute;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        #menu button, #gameOver button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="1280" height="1024"></canvas>
+    <script src="game.js"></script>
+    <div id="menu">
+        <button id="restartButton">Restart</button>
+    </div>
+    <div id="gameOver">
+        <p style="color: white; font-size: 24px;">Game Over! Your Score: <span id="finalScore"></span></p>
+        <button id="playAgainButton">Play Again</button>
+    </div>
+</body>
+</html>
