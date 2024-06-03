@@ -238,6 +238,7 @@ function runGameOver() {
     if (winning) {
         ctx.drawImage(winningImage, 0, 0, WIDTH, HEIGHT);
         backgroundMusic.pause();
+        backgroundMusic.currentTime = 0;
     }
 
     // Draw message
