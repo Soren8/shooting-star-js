@@ -2,7 +2,7 @@
 let width = window.innerWidth;
 let height = window.innerHeight;
 const BALL_SIZE = 32;
-const BALL_SPEED_X = width / 200;
+const BALL_SPEED_X = width / 400;
 const BALL_SPEED_Y = height / 200;
 const GRAVITY_ACC = 1 / (height / 100);
 
@@ -79,7 +79,7 @@ function restartGame() {
     paddle_width = 300;
     paddle_height = 25;
     fps = 120;
-    backgroundMusic.volume = 0.50;
+    backgroundMusic.volume = 0.25;
     backgroundMusic.play();
 }
 
@@ -308,7 +308,7 @@ function runGameOver() {
     if (score < 5) {
         message = "Wow, you really suck ass!";
         if (!ran_once) { playSound(zeroScoreSound); }
-    } else if (score < 20) {
+/*    } else if (score < 20) {
         message = "You suck!";
         if (!ran_once) { playSound(lowScoreSound); }
     } else if (score < 30) {
@@ -317,7 +317,7 @@ function runGameOver() {
     } else if (score < 50) {
         message = "Pretty good!";
         if (!ran_once) { playSound(goodScoreSound); }
-       } else {
+*/       } else {
         if (!ran_once) {
             playSound(winningScoreSound);
             winningDiv.style.display = 'flex';
