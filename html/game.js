@@ -66,12 +66,7 @@ let touchStartX = 0;
 
 // Restart game
 function restartGame() {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    ctx.canvas.width  = width;
-    ctx.canvas.height = height;
-    playerX = width / 2 - paddle_width / 2;
-    playerY = height - 50;
+    resizeCanvas();
     ballX = Math.random() * width;
     ballY = Math.random() * (height / 5) + height / 20;
     ballSpeedX = (Math.random() - 0.5) * 2 * BALL_SPEED_X;
@@ -386,6 +381,26 @@ window.addEventListener('keydown', (e) => {
         }
     }
 });
+
+// Update canvas and element sizes on window resize
+function resizeCanvas() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    ctx.canvas.width  = width;
+    ctx.canvas.height = height;
+    playerX = width / 2 - paddle_width / 2;
+    playerY = height - 50;
+
+    // Update paddle and ball positions if necessary
+    if (gameState === 'PLAYING') {
+        playerY = height - 50;
+        ballY = Math.min(ballY, playerY - BALL_SIZE);
+    }
+}
+
+// Call resizeCanvas initially and on window resize
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
 
 // Start game loop
 gameLoop();
