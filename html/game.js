@@ -1,6 +1,6 @@
 // Game settings
 const WIDTH = 1280;
-const HEIGHT = 1024;
+const HEIGHT = 720;
 const BALL_SIZE = 32;
 const BALL_SPEED = 5;
 const GRAVITY_ACC = 1 / (HEIGHT / 100);
