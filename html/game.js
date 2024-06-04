@@ -60,6 +60,10 @@ const midScoreSound = document.getElementById('midScoreSound');
 const goodScoreSound = document.getElementById('goodScoreSound');
 const winningScoreSound = document.getElementById('winningScoreSound');
 
+// Variables to track touch state
+let isTouching = false;
+let touchStartX = 0;
+
 // Restart game
 function restartGame() {
     width = window.innerWidth;
@@ -84,20 +88,57 @@ function restartGame() {
     backgroundMusic.play();
 }
 
-function playSound(sound) {
+function playSound(sound, dummy=false) {
     sound.currentTime = 0; // Reset to start
     sound.play();
+    if(dummy) { sound.pause() }
 }
 
 // Event Listeners
 playButton.addEventListener('click', () => {
     menu.style.display = 'none';
     restartGame();
+    // Dummy plays to activate sound on mobile browsers
+    playSound(zeroScoreSound, true);
+    playSound(lowScoreSound, true);
+    playSound(midScoreSound, true);
+    playSound(goodScoreSound, true);
+    playSound(winningScoreSound, true);
 });
 
 playAgainButton.addEventListener('click', () => {
     gameOverDiv.style.display = 'none';
     restartGame();
+});
+
+// Touch event listeners
+canvas.addEventListener('touchstart', (e) => {
+    const touch = e.touches[0];
+    touchStartX = touch.clientX;
+    isTouching = true;
+    e.preventDefault(); // Prevent scrolling
+});
+
+canvas.addEventListener('touchmove', (e) => {
+    if (isTouching) {
+        const touch = e.touches[0];
+        const touchX = touch.clientX;
+
+        // Calculate the touch movement and update paddle position
+        const touchMoveX = touchX - touchStartX;
+        playerX += touchMoveX;
+
+        // Keep paddle within bounds
+        playerX = Math.max(0, Math.min(playerX, width - paddle_width));
+
+        // Update the starting point for the next move
+        touchStartX = touchX;
+    }
+    e.preventDefault(); // Prevent scrolling
+});
+
+canvas.addEventListener('touchend', () => {
+    isTouching = false;
 });
 
 // Main game loop
@@ -246,7 +287,10 @@ function drawMenu() {
 
     text = [
         "Welcome to Shooting Star.",
-        "Move your wand at the bottom of the screen to stop the star from falling.",
+        " ",
+        "Move your wand at the bottom of the",
+        "screen to stop the star from falling.",
+        " ",
         "Score 50 to win!"
     ];
     drawText(text, width / 2, height * 0.33);
