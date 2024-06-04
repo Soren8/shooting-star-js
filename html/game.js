@@ -229,7 +229,7 @@ function update() {
 
 // Draw text with outline
 function drawText(text, x, y) {
-    ctx.font = '24px Arial';
+    ctx.font = '20px Arial';
     ctx.lineWidth = 4;
     ctx.fillStyle = '#FFF';
     ctx.strokeStyle = '#000';
