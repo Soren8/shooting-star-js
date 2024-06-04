@@ -80,6 +80,7 @@ function restartGame() {
     paddle_width = 300;
     paddle_height = 25;
     fps = 120;
+    backgroundMusic.volume = 0.50;
     backgroundMusic.play();
 }
 
