@@ -2,7 +2,8 @@
 let width = window.innerWidth;
 let height = window.innerHeight;
 const BALL_SIZE = 32;
-const BALL_SPEED = 5;
+const BALL_SPEED_X = width / 200;
+const BALL_SPEED_Y = height / 200;
 const GRAVITY_ACC = 1 / (height / 100);
 
 // Canvas setup
@@ -69,8 +70,8 @@ function restartGame() {
     playerY = height - 50;
     ballX = Math.random() * width;
     ballY = Math.random() * (height / 5) + height / 20;
-    ballSpeedX = (Math.random() - 0.5) * 2 * BALL_SPEED;
-    ballSpeedY = BALL_SPEED;
+    ballSpeedX = (Math.random() - 0.5) * 2 * BALL_SPEED_X;
+    ballSpeedY = BALL_SPEED_Y;
     score = 0;
     sparkles = [];
     gameState = 'PLAYING';
@@ -120,11 +121,11 @@ function update() {
 
     // Ensure ballSpeedX stays within reasonable bounds
     if (ballSpeedX < 0) {
-        ballSpeedX = Math.min(ballSpeedX, -BALL_SPEED / 2);
-        ballSpeedX = Math.max(ballSpeedX, -BALL_SPEED * 1.5);
+        ballSpeedX = Math.min(ballSpeedX, -BALL_SPEED_X / 2);
+        ballSpeedX = Math.max(ballSpeedX, -BALL_SPEED_X * 1.5);
     } else {
-        ballSpeedX = Math.max(ballSpeedX, BALL_SPEED / 2);
-        ballSpeedX = Math.min(ballSpeedX, BALL_SPEED * 1.5);
+        ballSpeedX = Math.max(ballSpeedX, BALL_SPEED_X / 2);
+        ballSpeedX = Math.min(ballSpeedX, BALL_SPEED_X * 1.5);
     }
 
     // Check for wall collisions
