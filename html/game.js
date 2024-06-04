@@ -293,8 +293,8 @@ function drawMenu() {
 
 // Draw game state for GAME_OVER
 function runGameOver() {
-    let shades_x = 300;
-    let shades_y_max = 190;
+    let shades_x = width * 0.23;
+    let shades_y_max = height / 6;
 
 
     if (!ran_once) {
@@ -308,7 +308,7 @@ function runGameOver() {
     if (score < 5) {
         message = "Wow, you really suck ass!";
         if (!ran_once) { playSound(zeroScoreSound); }
-    } else if (score < 20) {
+/*    } else if (score < 20) {
         message = "You suck!";
         if (!ran_once) { playSound(lowScoreSound); }
     } else if (score < 30) {
@@ -317,7 +317,8 @@ function runGameOver() {
     } else if (score < 50) {
         message = "Pretty good!";
         if (!ran_once) { playSound(goodScoreSound); }
-    } else {
+    */
+       } else {
         if (!ran_once) { playSound(winningScoreSound); }
         message = "";
         winning = true;
@@ -344,7 +345,7 @@ function runGameOver() {
             window.open("https://www.youtube.com/watch?v=9QS0q3mGPGg");
             linkOpened = true; // Set the flag to true after opening the link
         }
-        ctx.drawImage(shadesImage, shades_x, shades_y, width / 4, 200);
+        ctx.drawImage(shadesImage, shades_x, shades_y, width / 4, height / 5);
         shades_y += 1;
         shades_y = Math.min(shades_y, shades_y_max);
     }
