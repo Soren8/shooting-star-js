@@ -272,7 +272,7 @@ function drawPlaying() {
     ctx.globalAlpha = 1;
 
     // Draw score
-    drawText('Score: ' + score, 75, height - 5);
+    drawText('Score: ' + score, 75, height - 50);
 }
 
 // Draw game state for MENU
@@ -389,11 +389,10 @@ function resizeCanvas() {
     ctx.canvas.width  = width;
     ctx.canvas.height = height;
     playerX = width / 2 - paddle_width / 2;
-    playerY = height - 50;
+    playerY = height - 100;
 
-    // Update paddle and ball positions if necessary
+    // Update ball position if necessary
     if (gameState === 'PLAYING') {
-        playerY = height - 50;
         ballY = Math.min(ballY, playerY - BALL_SIZE);
     }
 }
