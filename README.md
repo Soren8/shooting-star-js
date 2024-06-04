@@ -8,8 +8,8 @@ Port of https://github.com/Soren8/shooting-star
 
 ```
 docker build -t shooting-star .
-
 docker save -o shooting-star.tar shooting-star
+
 scp shooting-star.tar ${HOST}:~
 ssh ${HOST}
 
