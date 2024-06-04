@@ -17,6 +17,8 @@
         canvas {
             display: block;
             margin: auto;
+            max-width: 100%;
+            max-height: 100%;
             background: url('background.webp') no-repeat center center;
             background-size: cover;
         }
@@ -36,7 +38,7 @@
     </style>
 </head>
 <body>
-    <canvas id="gameCanvas" width="1280" height="1024"></canvas>
+    <canvas id="gameCanvas"></canvas>
     <audio id="backgroundMusic" src="music.mp3" loop></audio>
     <audio id="zeroScoreSound" src="you-suck-ass.wav"></audio>
     <audio id="lowScoreSound" src="you-suck.wav"></audio>

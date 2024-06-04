@@ -1,13 +1,15 @@
 // Game settings
-const WIDTH = 1280;
-const HEIGHT = 720;
+let width = window.innerWidth;
+let height = window.innerHeight;
 const BALL_SIZE = 32;
 const BALL_SPEED = 5;
-const GRAVITY_ACC = 1 / (HEIGHT / 100);
+const GRAVITY_ACC = 1 / (height / 100);
 
 // Canvas setup
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
+ctx.canvas.width  = width;
+ctx.canvas.height = height;
 
 // Load images
 const ballImage = new Image();
@@ -57,6 +59,29 @@ const midScoreSound = document.getElementById('midScoreSound');
 const goodScoreSound = document.getElementById('goodScoreSound');
 const winningScoreSound = document.getElementById('winningScoreSound');
 
+// Restart game
+function restartGame() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    ctx.canvas.width  = width;
+    ctx.canvas.height = height;
+    playerX = width / 2 - paddle_width / 2;
+    playerY = height - 50;
+    ballX = Math.random() * width;
+    ballY = Math.random() * (height / 5) + height / 20;
+    ballSpeedX = (Math.random() - 0.5) * 2 * BALL_SPEED;
+    ballSpeedY = BALL_SPEED;
+    score = 0;
+    sparkles = [];
+    gameState = 'PLAYING';
+    ran_once = false; // Reset the ran_once flag
+    shades_y = -300;  // Reset shades_y
+    paddle_width = 300;
+    paddle_height = 25;
+    fps = 120;
+    backgroundMusic.play();
+}
+
 function playSound(sound) {
     sound.currentTime = 0; // Reset to start
     sound.play();
@@ -103,10 +128,10 @@ function update() {
     }
 
     // Check for wall collisions
-    if (ballX <= BALL_SIZE || ballX >= WIDTH - BALL_SIZE) {
+    if (ballX <= BALL_SIZE || ballX >= width - BALL_SIZE) {
         ballSpeedX = -ballSpeedX;
     }
-    if (ballY > HEIGHT - 30) {
+    if (ballY > height - 30) {
         gameState = 'GAME_OVER';
     }
 
@@ -114,7 +139,7 @@ function update() {
     if (keys.left && playerX > 0) {
         playerX -= 10;
     }
-    if (keys.right && playerX < WIDTH - paddle_width) {
+    if (keys.right && playerX < width - paddle_width) {
         playerX += 10;
     }
 
@@ -192,7 +217,7 @@ function drawText(text, x, y) {
 
 // Draw game state for PLAYING
 function drawPlaying() {
-    ctx.clearRect(0, 0, WIDTH, HEIGHT); // Clear canvas
+    ctx.clearRect(0, 0, width, height); // Clear canvas
 
     // Draw ball
     ctx.drawImage(ballImage, ballX, ballY, BALL_SIZE, BALL_SIZE);
@@ -209,12 +234,12 @@ function drawPlaying() {
     ctx.globalAlpha = 1;
 
     // Draw score
-    drawText('Score: ' + score, 75, HEIGHT - 5);
+    drawText('Score: ' + score, 75, height - 5);
 }
 
 // Draw game state for MENU
 function drawMenu() {
-    ctx.clearRect(0, 0, WIDTH, HEIGHT); // Clear canvas
+    ctx.clearRect(0, 0, width, height); // Clear canvas
     menu.style.display = 'flex';
 
     text = [
@@ -222,7 +247,7 @@ function drawMenu() {
         "Move your wand at the bottom of the screen to stop the star from falling.",
         "Score 50 to win!"
     ];
-    drawText(text, WIDTH / 2, HEIGHT * 0.33);
+    drawText(text, width / 2, height * 0.33);
 }
 
 // Draw game state for GAME_OVER
@@ -258,18 +283,18 @@ function runGameOver() {
     }
 
     // Clear canvas
-    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    ctx.clearRect(0, 0, width, height);
 
     // Draw winning image if applicable
     if (winning) {
-        ctx.drawImage(winningImage, 0, 0, WIDTH, HEIGHT);
+        ctx.drawImage(winningImage, 0, 0, width, height);
         backgroundMusic.pause();
         backgroundMusic.currentTime = 0;
     }
 
     // Draw message
     if (message) {
-        drawText(message, WIDTH / 2, HEIGHT / 3);
+        drawText(message, width / 2, height / 3);
     }
 
     // Handle winning scenario
@@ -278,7 +303,7 @@ function runGameOver() {
             window.open("https://www.youtube.com/watch?v=9QS0q3mGPGg");
             linkOpened = true; // Set the flag to true after opening the link
         }
-        ctx.drawImage(shadesImage, shades_x, shades_y, WIDTH / 4, 200);
+        ctx.drawImage(shadesImage, shades_x, shades_y, width / 4, 200);
         shades_y += 1;
         shades_y = Math.min(shades_y, shades_y_max);
     }
@@ -315,25 +340,6 @@ window.addEventListener('keydown', (e) => {
         }
     }
 });
-
-// Restart game
-function restartGame() {
-    playerX = WIDTH / 2 - paddle_width / 2;
-    playerY = HEIGHT - 50;
-    ballX = Math.random() * WIDTH;
-    ballY = Math.random() * (HEIGHT / 5) + HEIGHT / 20;
-    ballSpeedX = (Math.random() - 0.5) * 2 * BALL_SPEED;
-    ballSpeedY = BALL_SPEED;
-    score = 0;
-    sparkles = [];
-    gameState = 'PLAYING';
-    ran_once = false; // Reset the ran_once flag
-    shades_y = -300;  // Reset shades_y
-    paddle_width = 300;
-    paddle_height = 25;
-    fps = 120;
-    backgroundMusic.play();
-}
 
 // Start game loop
 gameLoop();
