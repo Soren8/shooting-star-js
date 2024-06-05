@@ -46,13 +46,13 @@ let shades_y = 0;
 
 // Other variables
 let gameState = 'MENU';
-let linkOpened = false;
 
 // Elements
 const menu = document.getElementById('menu');
 const gameOverDiv = document.getElementById('gameOver');
 const playButton = document.getElementById('playButton');
 const playAgainButton = document.getElementById('playAgainButton');
+const winningButton = document.getElementById('winningButton');
 const backgroundMusic = document.getElementById('backgroundMusic');
 const zeroScoreSound = document.getElementById('zeroScoreSound');
 const lowScoreSound = document.getElementById('lowScoreSound');
@@ -104,6 +104,10 @@ playButton.addEventListener('click', () => {
 playAgainButton.addEventListener('click', () => {
     gameOverDiv.style.display = 'none';
     restartGame();
+});
+
+winningButton.addEventListener('click', () => {
+    window.open("https://www.youtube.com/watch?v=9QS0q3mGPGg");
 });
 
 // Touch event listeners
@@ -300,6 +304,7 @@ function runGameOver() {
     if (!ran_once) {
         gameOverDiv.style.display = 'flex';
         fps = 120;
+        winningButton.style.display = 'none';
     }
 
     let winning = false;
@@ -321,6 +326,7 @@ function runGameOver() {
         if (!ran_once) { playSound(winningScoreSound); }
         message = "";
         winning = true;
+        winningButton.style.display = 'inline';
     }
 
     // Clear canvas
@@ -340,10 +346,6 @@ function runGameOver() {
 
     // Handle winning scenario
     if (winning) {
-        if (!linkOpened && shades_y >= shades_y_max) {
-            window.open("https://www.youtube.com/watch?v=9QS0q3mGPGg");
-            linkOpened = true; // Set the flag to true after opening the link
-        }
         ctx.drawImage(shadesImage, shades_x, shades_y, width / 4, height / 5);
         shades_y += 1;
         shades_y = Math.min(shades_y, shades_y_max);
