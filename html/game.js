@@ -308,7 +308,7 @@ function runGameOver() {
     if (score < 5) {
         message = "Wow, you really suck ass!";
         if (!ran_once) { playSound(zeroScoreSound); }
-/*    } else if (score < 20) {
+    } else if (score < 20) {
         message = "You suck!";
         if (!ran_once) { playSound(lowScoreSound); }
     } else if (score < 30) {
@@ -317,11 +317,8 @@ function runGameOver() {
     } else if (score < 50) {
         message = "Pretty good!";
         if (!ran_once) { playSound(goodScoreSound); }
-*/       } else {
-        if (!ran_once) {
-            playSound(winningScoreSound);
-            winningDiv.style.display = 'flex';
-        }
+       } else {
+        if (!ran_once) { playSound(winningScoreSound); }
         message = "";
         winning = true;
     }
