@@ -290,7 +290,7 @@ function drawMenu() {
         "Move your wand at the bottom of the",
         "screen to stop the star from falling.",
         " ",
-        "Score 50 to win!"
+        "Score 40 to win!"
     ];
     drawText(text, width / 2, height * 0.20);
 }
@@ -313,13 +313,13 @@ function runGameOver() {
     if (score < 5) {
         message = "Wow, you really suck ass!";
         if (!ran_once) { playSound(zeroScoreSound); }
-    } else if (score < 20) {
+    } else if (score < 15) {
         message = "You suck!";
         if (!ran_once) { playSound(lowScoreSound); }
-    } else if (score < 30) {
+    } else if (score < 25) {
         message = "Not bad.";
         if (!ran_once) { playSound(midScoreSound); }
-    } else if (score < 50) {
+    } else if (score < 40) {
         message = "Pretty good!";
         if (!ran_once) { playSound(goodScoreSound); }
        } else {
